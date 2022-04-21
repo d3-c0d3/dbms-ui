@@ -1,0 +1,78 @@
+<div class="container">
+  <div>
+    
+  </div>
+  <app-tiles></app-tiles>
+
+ <app-info-cards></app-info-cards>
+
+  <mat-card class="p-0">
+
+
+    <div class="header">
+      <h2>Pending Orders</h2>
+    </div>
+
+    <hr class="center-square">
+
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr class="table-head">
+            <th scope="col">{{'Order'}}</th>
+            <th scope="col">{{'Date'}}</th>
+            <th scope="col">{{'City'}}</th>
+            <th scope="col">{{'Payment Type'}}</th>
+            <th scope="col">{{'Payment Status'}}</th>
+            <th scope="col">{{'Delivery Status'}}</th>
+            <th scope="col">{{'Total'}}</th>
+            <th scope="col">{{'Actions'}}</th>
+          </tr>
+        </thead> <!-- End Table Head -->
+        <!-- {{orders | json}} -->
+        <tr
+          *ngFor="let data of [1,2,3] | paginate: { itemsPerPage: 1, currentPage: 1, totalItems: 10 }; let i = index">
+<!--          <td class="t-checkbox">-->
+<!--            <mat-checkbox class="t-mat-checkbox" [(ngModel)]="data.select"-->
+<!--                          (ngModelChange)="onCheckChange($event, i, data._id)"></mat-checkbox>-->
+<!--          </td>-->
+
+          <td [attr.data-label]="'Order'">10</td>
+          <td [attr.data-label]="'Date'">12</td>
+          <td [attr.data-label]="'City'">14</td>
+          <td [attr.data-label]="'Payment Type'">16</td>
+          <td [attr.data-label]="'Payment Status'"
+              >20</td>
+          <td [attr.data-label]="'Delivery Status'" class="italic"
+              >22</td>
+          <td [attr.data-label]="'Total'">৳ 24</td>
+          <td [attr.data-label]="'Actions'">
+            <button style="margin-right: 5px;" mat-mini-fab color="primary" > <!-- (click)="openUpdateOrderDialog(data)" -->
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button style="margin-right: 5px;" mat-mini-fab color="accent"
+                    [routerLink]="['/']">
+              <mat-icon>visibility</mat-icon>
+            </button>
+<!--            <button color="warn" (click)="deleteOrderByAdmin(data._id)" mat-mini-fab-->
+<!--                    aria-label="Example icon-button with a heart icon">-->
+<!--              <mat-icon>delete</mat-icon>-->
+<!--            </button>-->
+          </td>
+        </tr><!-- End Table Body -->
+
+      </table>
+    </div>
+  </mat-card>
+</div>
+
+<div class="pagination-container">
+  <!-- <pagination-controls
+    class="product-pagination"
+    [autoHide]="true"
+    [maxSize]="15"
+    (pageChange)="onPageChanged($event)">
+  </pagination-controls> -->
+</div>
+<!-- END PAGINATION -->
