@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SectionAnalysisComponent } from './section-analysis.component';
 
 describe('SectionAnalysisComponent', () => {
@@ -8,9 +7,8 @@ describe('SectionAnalysisComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SectionAnalysisComponent ]
-    })
-    .compileComponents();
+      declarations: [SectionAnalysisComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
