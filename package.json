@@ -30,6 +30,7 @@
     "@swimlane/ngx-charts": "^20.1.0",
     "@swimlane/ngx-datatable": "^20.0.0",
     "@types/d3-shape": "^3.0.2",
+    "chart.js": "^3.7.1",
     "crypto-js": "^4.1.1",
     "d3": "^7.4.4",
     "moment": "^2.29.3",
