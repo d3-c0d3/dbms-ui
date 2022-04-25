@@ -8,7 +8,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {BarChartModule, LineChartModule} from '@swimlane/ngx-charts';
 import {TilesComponent} from './tiles/tiles.component';
 // import {FlexLayoutServerModule} from '@angular/flex-layout/server';
-import {InfoCardsComponent} from './info-cards/info-cards.component';
+// import {InfoCardsComponent} from './info-cards/info-cards.component';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -26,7 +26,7 @@ const routes: Routes = [
   declarations: [
     DashboardComponent,
     TilesComponent,
-    InfoCardsComponent,
+    // InfoCardsComponent,
     
   ],
   imports: [

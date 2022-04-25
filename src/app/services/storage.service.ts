@@ -58,23 +58,11 @@ export class StorageService {
    * SESSION STORAGE
    */
 
-  storeProductInputData(data: any) {
-    sessionStorage.setItem(DATABASE_KEY.productFormData, JSON.stringify(data));
-  }
+ 
 
-  get storedProductInput(): any {
-    const data = sessionStorage.getItem(DATABASE_KEY.productFormData);
-    return JSON.parse(data);
-  }
 
-  storeCouponData(data: any) {
-    sessionStorage.setItem(DATABASE_KEY.userCoupon, JSON.stringify(data));
-  }
 
-  get storedCouponData(): any {
-    const data = sessionStorage.getItem(DATABASE_KEY.userCoupon);
-    return JSON.parse(data);
-  }
+
 
   /**
    * DYNAMIC SESSION DATA

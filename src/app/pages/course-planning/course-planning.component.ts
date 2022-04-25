@@ -1,28 +1,30 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, NgModel } from '@angular/forms';
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Chart } from 'chart.js';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ChartType } from 'chart.js';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { YEARS } from 'src/app/core/utils/date-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
 import { ReloadService } from 'src/app/services/reload.service';
 import { RevinewService } from 'src/app/services/revinew.service';
 import { SchoolService } from 'src/app/services/school.service';
+import { SectionService } from 'src/app/services/section.service';
 import { UiService } from 'src/app/services/ui.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { YEARS } from 'src/app/core/utils/date-data';
 
 @Component({
-  selector: 'app-summary',
-  templateUrl: './summary.component.html',
-  styleUrls: ['./summary.component.scss'],
+  selector: 'app-course-planning',
+  templateUrl: './course-planning.component.html',
+  styleUrls: ['./course-planning.component.scss']
 })
-export class SummaryComponent implements OnInit {
+export class CoursePlanningComponent implements OnInit {
+  course = new FormControl();
+  // courses: string[] = ['Extra cheese', 'Mushroom', 'Onion', 'Pepperoni', 'Sausage', 'Tomato'];
   // Subscriptions
   private subProduct: Subscription;
   private subCat: Subscription;
@@ -43,7 +45,8 @@ export class SummaryComponent implements OnInit {
     { value: { quantity: { $lte: 0 } }, viewValue: 'Autumn' },
     { value: { quantity: { $lte: 0 } }, viewValue: 'Spring' },
   ];
-
+  //selected course
+  selectedTerm:NgModel
   // Pagination
   currentPage = 1;
   totalProducts = 0;
@@ -64,6 +67,20 @@ export class SummaryComponent implements OnInit {
 
   product: any = null; //school
 
+  //chart
+  public lineChartType: ChartType = "bar";
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChartLabels = ['cse101', 'cse203', 'cse104', 'cse301', 'cse223', 'cse230', 'cse330','cse150'];
+  public barChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData = [
+    {data: [4, 6, 12, 3, 7, 5, 2,5], label: 'Sections'},
+    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+  ];
+  courses: string[] =this.barChartLabels;
   constructor(
     private revinewService: RevinewService,
     private spinner: NgxSpinnerService,
@@ -73,20 +90,10 @@ export class SummaryComponent implements OnInit {
     private dialog: MatDialog,
     private reloadService: ReloadService,
     private uiService: UiService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private sectionService:SectionService,
   ) {}
-  public lineChartType: ChartType = "bar";
-  public barChartOptions = {
-    scaleShowVerticalLines: false,
-    responsive: true
-  };
-  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartType = 'bar';
-  public barChartLegend = true;
-  public barChartData = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
-  ];
+ 
   
   ngOnInit(): void {
     // GET PAGE FROM QUERY PARAM
@@ -98,6 +105,7 @@ export class SummaryComponent implements OnInit {
       }
     });
 
+    this.getAllCourseBySemester();
    
   }
 
@@ -122,7 +130,14 @@ export class SummaryComponent implements OnInit {
   /**
    * HTTP REQ
    */
+  //
+  private getAllCourseBySemester(){
+    this.sectionService.getAllSectionByYearAndSemester(2022,'spring')
+    .subscribe(res=>{
+      console.log(res);
+    })
 
+  }
   private getAllProducts() {
     this.spinner.show();
 
@@ -145,6 +160,9 @@ export class SummaryComponent implements OnInit {
     this.router.navigate([], { queryParams: { page: event } });
   }
 
+  onSaveData(){
+    console.log(this.selectedTerm)
+  }
   /**
    * SELECTION CHANGE
    * FILTER
@@ -223,4 +241,5 @@ export class SummaryComponent implements OnInit {
       this.subForm.unsubscribe();
     }
   }
+
 }

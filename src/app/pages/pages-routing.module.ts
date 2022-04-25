@@ -43,6 +43,11 @@ const routes: Routes = [
         loadChildren: () => import('./course/course.module').then(m => m.CourseModule),
         data: {preload: true, delay: false}
       },
+      {
+        path: 'course-planning',
+        loadChildren: () => import('./course-planning/course-planning.module').then(m => m.CoursePlanningModule),
+        data: {preload: true, delay: false}
+      },
     ]
   }
 ];

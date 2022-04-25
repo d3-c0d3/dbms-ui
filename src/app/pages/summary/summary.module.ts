@@ -7,6 +7,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MaterialModule } from 'src/app/material/material.module';
 import { SummaryRoutingModule } from './summary-routing.module';
 import { SummaryComponent } from './summary.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [SummaryComponent],
@@ -18,6 +19,7 @@ import { SummaryComponent } from './summary.component';
     NgxPaginationModule,
     FormsModule,
     NgxSpinnerModule,
+    NgChartsModule
   ],
 })
 export class SummaryModule {}

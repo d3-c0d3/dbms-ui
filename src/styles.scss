@@ -60,7 +60,8 @@ $dbms-project-ui-theme: mat.define-light-theme((
 // @import "~swiper/css/effect-fade";
 //@import "~swiper/css/navigation";
 //@import "~swiper/css/pagination";
-
+/* chart bootstrap */
+@import '~bootstrap/dist/css/bootstrap.min.css';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
