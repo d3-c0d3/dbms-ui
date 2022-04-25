@@ -132,7 +132,11 @@ export class CoursePlanningComponent implements OnInit {
    */
   //
   private getAllCourseBySemester(){
-    this.sectionService.getAllSectionByYearAndSemester(2022,'spring')
+    const data={
+      year:"year",
+      semester:'semester'
+    }
+    this.sectionService.getAllSectionByYearAndSemester(data)
     .subscribe(res=>{
       console.log(res);
     })

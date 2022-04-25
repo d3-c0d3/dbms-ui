@@ -11,11 +11,8 @@ export class SectionService {
     private httpClient:HttpClient,
   ) { }
 
-  getAllSectionByYearAndSemester(year,semester){
-    const data={
-      year:year,
-      semester:semester
-    }
+  getAllSectionByYearAndSemester(data){
+    
     return this.httpClient.post<{ message: string }>( API_SEMESTER+ 'get-all-sections-by-semester', data);
   }
 }
