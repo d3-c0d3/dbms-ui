@@ -2,23 +2,17 @@
 
   <div class="filter-area">
     <div class="select-views">
+
+
       <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label>Select School</mat-label>
-        <mat-select #matCatSelect>
-          <mat-option *ngFor="let data of schools" [value]="data" (onSelectionChange)="onSelectSchool($event)">
-            <span>{{data.categoryName}}</span>
+        <mat-label> Starting Year</mat-label>
+        <mat-select #matSubCatSelect>
+          <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
+            <span>{{data}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label> starting Year</mat-label>
-        <mat-select #matSubCatSelect>
-          <mat-option *ngFor="let data of semesters" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
-            <span>{{data.subCategoryName}}</span>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
       <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Select Starting semester</mat-label>
         <mat-select #matStockSelect>
@@ -28,20 +22,31 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
       <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label> Ending Year</mat-label>
+        <mat-label>Ending Year</mat-label>
         <mat-select #matSubCatSelect>
-          <mat-option *ngFor="let data of semesters" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
-            <span>{{data.subCategoryName}}</span>
+          <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
+            <span>{{data}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
+
       <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Select ending semester</mat-label>
         <mat-select #matStockSelect>
           <mat-option *ngFor="let data of stockTypes" [value]="data.value"
             (onSelectionChange)="onSelectStockType($event)">
             <span>{{data.viewValue}}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="mat-filter-select">
+        <mat-label>Slot</mat-label>
+        <mat-select #matCatSelect>
+          <mat-option *ngFor="let data of schools" [value]="data" (onSelectionChange)="onSelectSchool($event)">
+            <span>{{data.categoryName}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -54,7 +59,7 @@
       </div>
     </div>
 
- 
+
 
   </div>
 
@@ -78,10 +83,10 @@
       <thead>
         <tr class="table-head">
           <th scope="col">{{'Semester'}}</th>
-          <th scope="col">{{'Setudents '}}</th>
-          <th scope="col">{{'Credit hours'}}</th>
-          <th scope="col">{{'Total Revinew'}}</th>
-          <th scope="col">{{'Change % '}}</th>
+          <th scope="col">{{'No of Room'}}</th>
+          <th scope="col">{{'Actual room '}}</th>
+          <!-- <th scope="col">{{'Total Revinew'}}</th>
+          <th scope="col">{{'Change % '}}</th> -->
 
         </tr>
       </thead> <!-- End Table Head -->
@@ -122,3 +127,10 @@
     <h2>No Product Found</h2>
   </div>
 </ng-template>
+
+<div class="chartdata">
+  <div class="chart-section">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [type]="lineChartType">
+    </canvas>
+  </div>

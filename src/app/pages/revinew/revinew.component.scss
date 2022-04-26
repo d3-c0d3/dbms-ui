@@ -3,7 +3,7 @@
 
 .container-fluid {
   position: relative;
-  padding:  24px 16px;
+  padding: 24px 16px;
 }
 
 .top-close {
@@ -29,11 +29,10 @@ TOP ACTION
     }
   }
 
-
   button {
     ::ng-deep {
       span {
-        color: #FFFFFF;
+        color: #ffffff;
       }
     }
   }
@@ -59,7 +58,7 @@ TOP ACTION
         margin-top: 11px;
         ::ng-deep {
           span {
-            color: #FFFFFF;
+            color: #ffffff;
           }
         }
       }
@@ -70,7 +69,6 @@ TOP ACTION
     margin-top: 6px;
   }
 }
-
 
 .table-image {
   width: 140px;
@@ -91,4 +89,10 @@ TOP ACTION
 
 .pagination-container {
   text-align: center;
+}
+
+#divChart {
+  display: block;
+  width: 400px;
+  height: 400px;
 }

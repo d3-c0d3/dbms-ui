@@ -20,7 +20,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 @Component({
   selector: 'app-course-planning',
   templateUrl: './course-planning.component.html',
-  styleUrls: ['./course-planning.component.scss']
+  styleUrls: ['./course-planning.component.scss'],
 })
 export class CoursePlanningComponent implements OnInit {
   course = new FormControl();
@@ -33,7 +33,7 @@ export class CoursePlanningComponent implements OnInit {
   private subForm: Subscription;
   private subDataOne?: Subscription;
 
-  yearSelector=YEARS
+  yearSelector = YEARS;
 
   // Store Data
   revinew: any[] = []; //revinew
@@ -46,7 +46,7 @@ export class CoursePlanningComponent implements OnInit {
     { value: { quantity: { $lte: 0 } }, viewValue: 'Spring' },
   ];
   //selected course
-  selectedTerm:NgModel
+  selectedTerm: NgModel;
   // Pagination
   currentPage = 1;
   totalProducts = 0;
@@ -68,19 +68,28 @@ export class CoursePlanningComponent implements OnInit {
   product: any = null; //school
 
   //chart
-  public lineChartType: ChartType = "bar";
+  public lineChartType: ChartType = 'bar';
   public barChartOptions = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
   };
-  public barChartLabels = ['cse101', 'cse203', 'cse104', 'cse301', 'cse223', 'cse230', 'cse330','cse150'];
+  public barChartLabels = [
+    'cse101',
+    'cse203',
+    'cse104',
+    'cse301',
+    'cse223',
+    'cse230',
+    'cse330',
+    'cse150',
+  ];
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData = [
-    {data: [4, 6, 12, 3, 7, 5, 2,5], label: 'Sections'},
+    { data: [4, 6, 12, 3, 7, 5, 2, 5], label: 'Sections' },
     // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
   ];
-  courses: string[] =this.barChartLabels;
+  courses: string[] = this.barChartLabels;
   constructor(
     private revinewService: RevinewService,
     private spinner: NgxSpinnerService,
@@ -91,10 +100,9 @@ export class CoursePlanningComponent implements OnInit {
     private reloadService: ReloadService,
     private uiService: UiService,
     private utilsService: UtilsService,
-    private sectionService:SectionService,
+    private sectionService: SectionService
   ) {}
- 
-  
+
   ngOnInit(): void {
     // GET PAGE FROM QUERY PARAM
     this.subAcRoute = this.activatedRoute.queryParams.subscribe((qParam) => {
@@ -106,7 +114,6 @@ export class CoursePlanningComponent implements OnInit {
     });
 
     this.getAllCourseBySemester();
-   
   }
 
   /**
@@ -131,16 +138,16 @@ export class CoursePlanningComponent implements OnInit {
    * HTTP REQ
    */
   //
-  private getAllCourseBySemester(){
-    const data={
-      year:"year",
-      semester:'semester'
-    }
-    this.sectionService.getAllSectionByYearAndSemester(data)
-    .subscribe(res=>{
-      console.log(res);
-    })
-
+  private getAllCourseBySemester() {
+    const data = {
+      year: 'year',
+      semester: 'semester',
+    };
+    this.sectionService
+      .getAllSectionByYearAndSemester(data)
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
   private getAllProducts() {
     this.spinner.show();
@@ -164,8 +171,8 @@ export class CoursePlanningComponent implements OnInit {
     this.router.navigate([], { queryParams: { page: event } });
   }
 
-  onSaveData(){
-    console.log(this.selectedTerm)
+  onSaveData() {
+    console.log(this.selectedTerm);
   }
   /**
    * SELECTION CHANGE
@@ -245,5 +252,4 @@ export class CoursePlanningComponent implements OnInit {
       this.subForm.unsubscribe();
     }
   }
-
 }

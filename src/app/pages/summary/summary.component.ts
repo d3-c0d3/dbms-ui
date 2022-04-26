@@ -3,11 +3,11 @@ import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Chart } from 'chart.js';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ChartType } from 'chart.js';
-
+// import { Chart } from 'chart.js';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { YEARS } from 'src/app/core/utils/date-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
 import { ReloadService } from 'src/app/services/reload.service';
@@ -15,7 +15,6 @@ import { RevinewService } from 'src/app/services/revinew.service';
 import { SchoolService } from 'src/app/services/school.service';
 import { UiService } from 'src/app/services/ui.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { YEARS } from 'src/app/core/utils/date-data';
 
 @Component({
   selector: 'app-summary',
@@ -31,7 +30,7 @@ export class SummaryComponent implements OnInit {
   private subForm: Subscription;
   private subDataOne?: Subscription;
 
-  yearSelector=YEARS
+  yearSelector = YEARS;
 
   // Store Data
   revinew: any[] = []; //revinew
@@ -75,19 +74,27 @@ export class SummaryComponent implements OnInit {
     private uiService: UiService,
     private utilsService: UtilsService
   ) {}
-  public lineChartType: ChartType = "bar";
+  public lineChartType: ChartType = 'bar';
   public barChartOptions = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
   };
-  public barChartLabels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  public barChartLabels = [
+    '2006',
+    '2007',
+    '2008',
+    '2009',
+    '2010',
+    '2011',
+    '2012',
+  ];
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
   ];
-  
+
   ngOnInit(): void {
     // GET PAGE FROM QUERY PARAM
     this.subAcRoute = this.activatedRoute.queryParams.subscribe((qParam) => {
@@ -97,8 +104,6 @@ export class SummaryComponent implements OnInit {
         this.currentPage = 1;
       }
     });
-
-   
   }
 
   /**
