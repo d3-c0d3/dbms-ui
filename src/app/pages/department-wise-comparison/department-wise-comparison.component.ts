@@ -3,8 +3,10 @@ import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChartType } from 'chart.js';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { YEARS } from 'src/app/core/utils/date-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
 import { ReloadService } from 'src/app/services/reload.service';
@@ -27,6 +29,7 @@ export class DepartmentWiseComparisonComponent implements OnInit {
   private subForm: Subscription;
   private subDataOne?: Subscription;
 
+  yearSelector = YEARS;
   // Store Data
   revinew: any[] = []; //revinew
   private holdPrevData: any[] = [];
@@ -57,6 +60,29 @@ export class DepartmentWiseComparisonComponent implements OnInit {
   // Store Product
 
   product: any = null; //school
+
+  public lineChartType: ChartType = 'bar';
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+  };
+  public barChartLabels = [
+    'cse101',
+    'cse203',
+    'cse104',
+    'cse301',
+    'cse223',
+    'cse230',
+    'cse330',
+    'cse150',
+  ];
+
+  public barChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData = [
+    { data: [4, 6, 12, 3, 7, 5, 2, 5], label: 'Sections' },
+    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+  ];
 
   constructor(
     private revinewService: RevinewService,

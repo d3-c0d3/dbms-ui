@@ -2,7 +2,7 @@
 
   <div class="filter-area">
     <div class="select-views">
-    <!--   <mat-form-field appearance="outline" class="mat-filter-select">
+      <!--   <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Select School</mat-label>
         <mat-select #matCatSelect>
           <mat-option *ngFor="let data of schools" [value]="data" (onSelectionChange)="onSelectSchool($event)">
@@ -20,7 +20,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label>Select  semester</mat-label>
+        <mat-label>Select semester</mat-label>
         <mat-select #matStockSelect>
           <mat-option *ngFor="let data of stockTypes" [value]="data.value"
             (onSelectionChange)="onSelectStockType($event)">
@@ -36,7 +36,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field> -->
-     <!--  <mat-form-field appearance="outline" class="mat-filter-select">
+      <!--  <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Select ending semester</mat-label>
         <mat-select #matStockSelect>
           <mat-option *ngFor="let data of stockTypes" [value]="data.value"
@@ -54,7 +54,7 @@
       </div>
     </div>
 
- 
+
 
   </div>
 
@@ -73,7 +73,7 @@
   <hr class="center-square">
 
 
-  
+
 </div>
 
 
@@ -90,15 +90,18 @@
   </div>
 </ng-template>
 
-
-<div style="width: 80%;">
-  <div style="display: block">
-    <canvas baseChart
-            [datasets]="barChartData"
-            [labels]="barChartLabels"
-            [options]="barChartOptions"
-            [legend]="barChartLegend"
-            [type]="lineChartType">
+<div class="chartdata">
+  <div class="chart-section">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [type]="lineChartType">
     </canvas>
   </div>
-</div>
+
+
+  <div style="width: 80%;">
+    <div style="display: block">
+      <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+        [legend]="barChartLegend" [type]="lineChartType">
+      </canvas>
+    </div>
+  </div>

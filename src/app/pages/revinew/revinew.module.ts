@@ -1,28 +1,26 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgChartsModule } from 'ng2-charts';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { MaterialModule } from 'src/app/material/material.module';
 import { RevinewRoutingModule } from './revinew-routing.module';
 import { RevinewComponent } from './revinew.component';
-import { MaterialModule } from 'src/app/material/material.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
-
 
 @NgModule({
-  declarations: [
-    RevinewComponent
-  ],
+  declarations: [RevinewComponent],
   imports: [
     CommonModule,
     RevinewRoutingModule,
     MaterialModule,
     FlexLayoutModule,
     NgxPaginationModule,
-    
     FormsModule,
     NgxSpinnerModule,
-  ]
+    NgChartsModule,
+    ReactiveFormsModule,
+  ],
 })
-export class RevinewModule { }
+export class RevinewModule {}

@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
-    <div class="filter-area">
-      <div class="select-views">
+  <div class="filter-area">
+    <div class="select-views">
       <!--   <mat-form-field appearance="outline" class="mat-filter-select">
           <mat-label>Select School</mat-label>
           <mat-select #matCatSelect>
@@ -10,26 +10,26 @@
             </mat-option>
           </mat-select>
         </mat-form-field> -->
-  
-        <mat-form-field appearance="outline" class="mat-filter-select">
-          <mat-label> Select Year</mat-label>
-          <mat-select #matSubCatSelect>
-            <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
-              <span>{{data}}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="mat-filter-select">
-          <mat-label>Select  semester</mat-label>
-          <mat-select  >
-            <mat-option *ngFor="let data of stockTypes" [value]="data.value"
-              (onSelectionChange)="onSelectStockType($event)">
-              <span>{{data.viewValue}}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-       
-        <!-- <mat-form-field appearance="outline" class="mat-filter-select">
+
+      <mat-form-field appearance="outline" class="mat-filter-select">
+        <mat-label> Select Year</mat-label>
+        <mat-select #matSubCatSelect>
+          <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
+            <span>{{data}}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="mat-filter-select">
+        <mat-label>Select semester</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let data of stockTypes" [value]="data.value"
+            (onSelectionChange)="onSelectStockType($event)">
+            <span>{{data.viewValue}}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- <mat-form-field appearance="outline" class="mat-filter-select">
           <mat-label> Ending Year</mat-label>
           <mat-select #matSubCatSelect>
             <mat-option *ngFor="let data of semesters" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
@@ -37,7 +37,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field> -->
-       <!--  <mat-form-field appearance="outline" class="mat-filter-select">
+      <!--  <mat-form-field appearance="outline" class="mat-filter-select">
           <mat-label>Select ending semester</mat-label>
           <mat-select #matStockSelect>
             <mat-option *ngFor="let data of stockTypes" [value]="data.value"
@@ -46,71 +46,69 @@
             </mat-option>
           </mat-select>
         </mat-form-field> -->
-  
-        <div class="clear" *ngIf="query">
-          <button mat-raised-button color="warn" (click)="onClearFilter()">
-            <mat-icon>clear</mat-icon>
-            Clear Filter
-          </button>
-        </div>
+
+      <div class="clear" *ngIf="query">
+        <button mat-raised-button color="warn" (click)="onClearFilter()">
+          <mat-icon>clear</mat-icon>
+          Clear Filter
+        </button>
       </div>
-  
-   
-  
     </div>
-  
-  
-  
-  
-    <div class="top-action">
-  
-  
-  
-  
-    </div>
-  
-  
-  
-    <hr class="center-square">
-  
-  
-    
+
+
+
   </div>
-  
-  
-  <!-- LOADING TEMPLATE -->
-  <ngx-spinner style="width: 100vw; height: 100vh" bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff"
-    type="ball-clip-rotate" [fullScreen]="true">
-    <p style="color: white"> Loading... </p>
-  </ngx-spinner>
-  
-  <!-- NO DATA TEMPLATE -->
-  <ng-template #noData>
-    <div style="margin-top: 50px; text-align: center">
-      <h2>No Data Found</h2>
-    </div>
-  </ng-template>
-  
-  
-  <div class="chartdata">
-    <div class="chart-section">
-      <canvas baseChart
-              [datasets]="barChartData"
-              [labels]="barChartLabels"
-              [options]="barChartOptions"
-              [legend]="barChartLegend"
-              [type]="lineChartType">
-      </canvas>
-    </div>
-    <div class="data-section">
-        <mat-form-field appearance="outline">
-            <mat-label>Courses</mat-label>
-            <mat-select [(ngModel)]="selectedTerm" [formControl]="course" multiple>
-              <mat-option *ngFor="let c of courses" [value]="c">{{c}}</mat-option>
-            </mat-select>
-          </mat-form-field>
-    </div>
-    <div>
-      <button mat-button (click)="onSaveData()">save</button>
-    </div>
+
+
+
+
+  <div class="top-action">
+
+
+
+
   </div>
+
+
+
+  <hr class="center-square">
+
+
+
+</div>
+
+
+<!-- LOADING TEMPLATE -->
+<ngx-spinner style="width: 100vw; height: 100vh" bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff"
+  type="ball-clip-rotate" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<!-- NO DATA TEMPLATE -->
+<ng-template #noData>
+  <div style="margin-top: 50px; text-align: center">
+    <h2>No Data Found</h2>
+  </div>
+</ng-template>
+
+
+<div class="chartdata">
+  <div class="chart-section">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [type]="lineChartType">
+    </canvas>
+  </div>
+
+
+  <div class="data-section">
+    <mat-form-field appearance="outline">
+      <mat-label>Courses</mat-label>
+      <mat-select [(ngModel)]="selectedTerm" [formControl]="course" multiple>
+        <mat-option *ngFor="let c of courses" [value]="c">{{c}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <button mat-button (click)="onSaveData()">save</button>
+  </div>
+</div>

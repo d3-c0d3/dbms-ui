@@ -3,8 +3,10 @@ import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChartType } from 'chart.js';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { YEARS } from 'src/app/core/utils/date-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
 import { ReloadService } from 'src/app/services/reload.service';
@@ -16,11 +18,9 @@ import { UtilsService } from 'src/app/services/utils.service';
 @Component({
   selector: 'app-revinew',
   templateUrl: './revinew.component.html',
-  styleUrls: ['./revinew.component.scss']
+  styleUrls: ['./revinew.component.scss'],
 })
 export class RevinewComponent implements OnInit {
-
-  
   // Subscriptions
   private subProduct: Subscription;
   private subCat: Subscription;
@@ -29,15 +29,16 @@ export class RevinewComponent implements OnInit {
   private subForm: Subscription;
   private subDataOne?: Subscription;
 
+  yearSelector = YEARS;
   // Store Data
   revinew: any[] = []; //revinew
   private holdPrevData: any[] = [];
   schools: any[] = ['sets']; //school
   semesters: any[] = []; //semester
   stockTypes: Select[] = [
-    {value: {quantity: {$gt: 0}}, viewValue: 'Summer'},
-    {value: {quantity: {$lte: 0}}, viewValue: 'Autumn'},
-    {value: {quantity: {$lte: 0}}, viewValue: 'Spring'},
+    { value: { quantity: { $gt: 0 } }, viewValue: 'Summer' },
+    { value: { quantity: { $lte: 0 } }, viewValue: 'Autumn' },
+    { value: { quantity: { $lte: 0 } }, viewValue: 'Spring' },
   ];
 
   // Pagination
@@ -57,8 +58,31 @@ export class RevinewComponent implements OnInit {
   dataTypeFormat = 'excel';
 
   // Store Product
- 
+
   product: any = null; //school
+
+  public lineChartType: ChartType = 'bar';
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+  };
+  public barChartLabels = [
+    'cse101',
+    'cse203',
+    'cse104',
+    'cse301',
+    'cse223',
+    'cse230',
+    'cse330',
+    'cse150',
+  ];
+
+  public barChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData = [
+    { data: [4, 6, 12, 3, 7, 5, 2, 5], label: 'Sections' },
+    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+  ];
 
   constructor(
     private revinewService: RevinewService,
@@ -69,31 +93,28 @@ export class RevinewComponent implements OnInit {
     private dialog: MatDialog,
     private reloadService: ReloadService,
     private uiService: UiService,
-    private utilsService: UtilsService,
-  ) {
-  }
+    private utilsService: UtilsService
+  ) {}
 
   ngOnInit(): void {
     // GET PAGE FROM QUERY PARAM
-    this.subAcRoute = this.activatedRoute.queryParams.subscribe(qParam => {
+    this.subAcRoute = this.activatedRoute.queryParams.subscribe((qParam) => {
       if (qParam && qParam.page) {
         this.currentPage = qParam.page;
       } else {
         this.currentPage = 1;
       }
-     
     });
 
     // OBSERVABLE
     // this.reloadService.refreshRevinew$
-      // .subscribe(() => {
-        // this.getRevinew();
-      // });
+    // .subscribe(() => {
+    // this.getRevinew();
+    // });
 
     // GET
     // this.getAllSchools();
   }
-
 
   /**
    * COMPONENT DIALOG VIEW
@@ -113,8 +134,6 @@ export class RevinewComponent implements OnInit {
   //   });
   // }
 
-
-
   /**
    * HTTP REQ
    */
@@ -124,36 +143,22 @@ export class RevinewComponent implements OnInit {
 
     const pagination: Pagination = {
       pageSize: this.productsPerPage.toString(),
-      currentPage: this.currentPage.toString()
+      currentPage: this.currentPage.toString(),
     };
 
-    const sort = {createdAt: -1};
-
-    
+    const sort = { createdAt: -1 };
   }
 
-  private getAllCategory() {
-    
-  }
+  private getAllCategory() {}
 
-  private getAllSubCategory(categoryId: string) {
-    
-  }
-
-
- 
-
-  
- 
-
+  private getAllSubCategory(categoryId: string) {}
 
   /**
    * PAGINATION CHANGE
    */
   public onPageChanged(event: any) {
-    this.router.navigate([], {queryParams: {page: event}});
+    this.router.navigate([], { queryParams: { page: event } });
   }
-
 
   /**
    * SELECTION CHANGE
@@ -161,11 +166,11 @@ export class RevinewComponent implements OnInit {
    */
   onSelectSchool(event: MatOptionSelectionChange) {
     if (event.isUserInput) {
-      const category = event.source.value ;
-      this.query = {category: category._id};
+      const category = event.source.value;
+      this.query = { category: category._id };
       this.getAllSubCategory(category._id);
       if (this.currentPage > 1) {
-        this.router.navigate([], {queryParams: {page: 1}});
+        this.router.navigate([], { queryParams: { page: 1 } });
       } else {
         this.getAllProducts();
       }
@@ -174,10 +179,10 @@ export class RevinewComponent implements OnInit {
 
   onSelectSemesters(event: MatOptionSelectionChange) {
     if (event.isUserInput) {
-      const subCategory = event.source.value ; //as DataType
-      this.query = {...this.query, ...{subCategory: subCategory._id}};
+      const subCategory = event.source.value; //as DataType
+      this.query = { ...this.query, ...{ subCategory: subCategory._id } };
       if (this.currentPage > 1) {
-        this.router.navigate([], {queryParams: {page: 1}});
+        this.router.navigate([], { queryParams: { page: 1 } });
       } else {
         this.getAllProducts();
       }
@@ -188,7 +193,7 @@ export class RevinewComponent implements OnInit {
     if (event.isUserInput) {
       this.query = event.source.value;
       if (this.currentPage > 1) {
-        this.router.navigate([], {queryParams: {page: 1}});
+        this.router.navigate([], { queryParams: { page: 1 } });
       } else {
         this.getAllProducts();
       }
@@ -202,25 +207,21 @@ export class RevinewComponent implements OnInit {
     this.matCatSelect.options.forEach((data: MatOption) => data.deselect());
     this.matSubCatSelect.options.forEach((data: MatOption) => data.deselect());
     this.query = null;
-    this.router.navigate([], {queryParams: {page: null}, queryParamsHandling: 'merge'});
+    this.router.navigate([], {
+      queryParams: { page: null },
+      queryParamsHandling: 'merge',
+    });
     this.getAllProducts();
   }
-
- 
-
-  
- 
 
   /**
    * HTTP REQ HANDLE
    */
- 
 
   /**
    * ON DESTROY
    */
   ngOnDestroy() {
-
     if (this.subAcRoute) {
       this.subAcRoute.unsubscribe();
     }
@@ -237,7 +238,4 @@ export class RevinewComponent implements OnInit {
       this.subForm.unsubscribe();
     }
   }
-
-
-
 }
