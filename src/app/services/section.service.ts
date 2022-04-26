@@ -15,4 +15,7 @@ export class SectionService {
     
     return this.httpClient.post<{ message: string }>( API_SEMESTER+ 'get-all-sections-by-semester', data);
   }
+  getFilturedRevinew(data){
+    return this.httpClient.post<{ data:any, message: string }>( API_SEMESTER+ 'get-filtured-revinew', data);
+  }
 }

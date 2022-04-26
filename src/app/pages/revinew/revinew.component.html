@@ -1,58 +1,73 @@
 
 <div class="container-fluid">
-
+  <form  [formGroup]="dataForm" (ngSubmit)="onSubmitQuery()"
+        #templateForm="ngForm"
+        fxLayout="column"
+        fxLayoutAlign="space-around center">
     <div class="filter-area">
       <div class="select-views">
+        
         <mat-form-field appearance="outline" class="mat-filter-select">
           <mat-label>Select School</mat-label>
-          <mat-select #matCatSelect>
-            <mat-option *ngFor="let data of schools" [value]="data" (onSelectionChange)="onSelectSchool($event)">
-              <span>{{data.categoryName}}</span>
+          <mat-select #matSchoolSelect formControlName="school">
+            <mat-option *ngFor="let data of schools" [value]="data?.SCHOOL_ID" > <!-- (onSelectionChange)="onSelectSchool($event)" -->
+              <span>{{data.SCHOOL_ID}}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
   
         <mat-form-field appearance="outline" class="mat-filter-select">
           <mat-label> starting Year</mat-label>
-          <mat-select #matSubCatSelect>
-            <mat-option *ngFor="let data of semesters" [value]="data"
-                        (onSelectionChange)="onSelectSemesters($event)">
-              <span>{{data.subCategoryName}}</span>
+          <mat-select #matYearSelect formControlName="startingYear">
+            <mat-option *ngFor="let data of years" [value]="data"> <!-- (onSelectionChange)="onSelectSemesters($event)" -->
+              <span>{{data}}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" class="mat-filter-select">
             <mat-label>Select Starting semester</mat-label>
-            <mat-select #matStockSelect>
-              <mat-option *ngFor="let data of stockTypes" [value]="data.value" (onSelectionChange)="onSelectStockType($event)">
+            <mat-select #matSemesterSelect formControlName="startingSemester">
+              <mat-option *ngFor="let data of semesters" [value]="data.value" > <!-- (onSelectionChange)="onSelectStockType($event)" -->
                 <span>{{data.viewValue}}</span>
               </mat-option>
             </mat-select>
           </mat-form-field>
         <mat-form-field appearance="outline" class="mat-filter-select">
             <mat-label> Ending Year</mat-label>
-            <mat-select #matSubCatSelect>
-              <mat-option *ngFor="let data of semesters" [value]="data"
-                          (onSelectionChange)="onSelectSemesters($event)">
-                <span>{{data.subCategoryName}}</span>
+            <mat-select #matYearSelect formControlName="endingYear">
+              <mat-option *ngFor="let data of years" [value]="data"> <!-- (onSelectionChange)="onSelectSemesters($event)" -->
+                <span>{{data}}</span>
               </mat-option>
             </mat-select>
           </mat-form-field>
         <mat-form-field appearance="outline" class="mat-filter-select">
-          <mat-label>Select ending semester</mat-label>
-          <mat-select #matStockSelect>
-            <mat-option *ngFor="let data of stockTypes" [value]="data.value" (onSelectionChange)="onSelectStockType($event)">
+          <mat-label>Select ending semester</mat-label >
+          <mat-select #matSemesterSelect formControlName="endingSemester">
+            <mat-option *ngFor="let data of semesters" [value]="data.value" > <!-- (onSelectionChange)="onSelectStockType($event)" -->
               <span>{{data.viewValue}}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
-  
-        <div class="clear" *ngIf="query">
+        
+        <div class="clear" >
           <button mat-raised-button color="warn" (click)="onClearFilter()">
             <mat-icon>clear</mat-icon>
             Clear Filter
           </button>
         </div>
+        <div class="clear" >
+          <button mat-raised-button color="primary" type="submit">
+            <mat-icon>success</mat-icon>
+            Submit
+          </button>
+        </div>
+        <!-- <div class="clear" *ngIf="query">
+          <button mat-raised-button color="warn" (click)="onClearFilter()">
+            <mat-icon>clear</mat-icon>
+            Clear Filter
+          </button>
+        </div> -->
+       
       </div>
   
       <!-- <div class="search search-area">
@@ -72,6 +87,7 @@
       </div> -->
   
     </div>
+  </form>
   
   <!--  {{products | json}}-->
   

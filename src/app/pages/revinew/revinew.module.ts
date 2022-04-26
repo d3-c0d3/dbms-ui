@@ -6,7 +6,7 @@ import { RevinewComponent } from './revinew.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
 
@@ -20,7 +20,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     MaterialModule,
     FlexLayoutModule,
     NgxPaginationModule,
-    
+    ReactiveFormsModule,
     FormsModule,
     NgxSpinnerModule,
   ]

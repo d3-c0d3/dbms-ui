@@ -49,7 +49,9 @@ TOP ACTION
     width: 680px;
     flex-direction: row;
     gap: 12px;
-
+    form{
+      display: flex !important;
+    }
     .mat-filter-select {
       width: 300px;
     }
