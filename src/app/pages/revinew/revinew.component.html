@@ -1,5 +1,5 @@
-
 <div class="container-fluid">
+
   <form  [formGroup]="dataForm" (ngSubmit)="onSubmitQuery()"
         #templateForm="ngForm"
         fxLayout="column"
@@ -68,9 +68,11 @@
           </button>
         </div> -->
        
+
       </div>
-  
-      <!-- <div class="search search-area">
+    </div>
+
+    <!-- <div class="search search-area">
         <form class="search-form" #searchForm=ngForm>
           <input #searchInput
                  style="background: aliceblue;"
@@ -85,73 +87,84 @@
           </div>
         </form>
       </div> -->
+
   
     </div>
   </form>
   
+
+  </div>
+
+
   <!--  {{products | json}}-->
-  
-  
-    <div class="top-action">
-      
-  
-      
-  
-    </div>
-  
-  
-  
-    <hr class="center-square">
-  
-  
-    <div class="table-container">
-      <table>
-        <thead>
+
+
+  <div class="top-action">
+
+
+
+
+  </div>
+
+
+
+  <hr class="center-square">
+
+
+  <div class="table-container">
+    <table>
+      <thead>
         <tr class="table-head">
           <th scope="col">{{'Semester'}}</th>
-          <th scope="col">{{'Setudents '}}</th>
-          <th scope="col">{{'Credit hours'}}</th>
+          <th scope="col">{{'School  '}}</th>
+          <!-- <th scope="col">{{'Credit hours'}}</th> -->
           <th scope="col">{{'Total Revinew'}}</th>
+
           <th scope="col">{{'Change % '}}</th>
-         
+
         </tr>
-        </thead> <!-- End Table Head -->
-        <tr
-          *ngFor="let data of revinew | paginate: { itemsPerPage: productsPerPage, currentPage: currentPage, totalItems: totalProducts }; let i = index">
-          <td [attr.data-label]="'Name'">{{data.productName}}</td>
-          
-          <td [attr.data-label]="'SKU'">{{data.sku}}</td>
-          <td [attr.data-label]="'Category'">{{data.category?.categoryName}}</td>
-          <td [attr.data-label]="'Retail Price'">৳ {{data.price }}</td>
-          <td [attr.data-label]="'Sale Price'">৳ {{data }}</td>
-          
-          
-        </tr><!-- End Table Body -->
-  
-      </table>
-  
-    </div>
-  
-    <div class="pagination-container">
-      <pagination-controls
-        class="product-pagination"
-        [autoHide]="true"
-        [maxSize]="15"
-        (pageChange)="onPageChanged($event)">
-      </pagination-controls>
-    </div>     <!-- END PAGINATION -->
-  
+      </thead> <!-- End Table Head -->
+      <tr
+        *ngFor="let data of revinew | paginate: { itemsPerPage: productsPerPage, currentPage: currentPage, totalItems: totalProducts }; let i = index">
+        <td [attr.data-label]="'Name'">{{data.productName}}</td>
+
+        <td [attr.data-label]="'SKU'">{{data.sku}}</td>
+        <td [attr.data-label]="'Category'">{{data.category?.categoryName}}</td>
+        <td [attr.data-label]="'Retail Price'">৳ {{data.price }}</td>
+        <td [attr.data-label]="'Sale Price'">৳ {{data }}</td>
+
+
+      </tr><!-- End Table Body -->
+
+    </table>
+
   </div>
-  
-  
-  <!-- LOADING TEMPLATE -->
-  <ngx-spinner style="width: 100vw; height: 100vh" bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff"
-               type="ball-clip-rotate" [fullScreen]="true"><p style="color: white"> Loading... </p></ngx-spinner>
-  
-  <!-- NO DATA TEMPLATE -->
-  <ng-template #noData>
-    <div style="margin-top: 50px; text-align: center">
-      <h2>No Product Found</h2>
-    </div>
-  </ng-template>
-  
+
+  <div class="pagination-container">
+    <pagination-controls class="product-pagination" [autoHide]="true" [maxSize]="15"
+      (pageChange)="onPageChanged($event)">
+    </pagination-controls>
+  </div> <!-- END PAGINATION -->
+
+</div>
+
+
+<!-- LOADING TEMPLATE -->
+<ngx-spinner style="width: 100vw; height: 100vh" bdColor="rgba(0,0,0,0.25)" size="medium" color="#fff"
+  type="ball-clip-rotate" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<!-- NO DATA TEMPLATE -->
+<ng-template #noData>
+  <div style="margin-top: 50px; text-align: center">
+    <h2>No Product Found</h2>
+  </div>
+</ng-template>
+
+<div class="chartdata">
+  <div class="chart-section">
+    <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+      [legend]="barChartLegend" [type]="lineChartType">
+    </canvas>
+  </div>
