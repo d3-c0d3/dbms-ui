@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +7,6 @@ import { ChartType } from 'chart.js';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { YEARS } from 'src/app/core/utils/date-data';
-import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
 import { ReloadService } from 'src/app/services/reload.service';
 import { RevinewService } from 'src/app/services/revinew.service';
@@ -23,9 +21,7 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./revinew.component.scss'],
 })
 export class RevinewComponent implements OnInit {
-
-
-  dataForm:FormGroup
+  dataForm: FormGroup;
 
   // Subscriptions
   private subProduct: Subscription;
@@ -40,13 +36,12 @@ export class RevinewComponent implements OnInit {
   revinew: any[] = []; //revinew
   private holdPrevData: any[] = [];
 
-  schools: any[] ; //school
-  years=YEARS; //semester
+  schools: any[]; //school
+  years = YEARS; //semester
   semesters: Select[] = [
-    {value: 'summer', viewValue: 'Summer'},
-    {value: 'autumn', viewValue: 'Autumn'},
-    {value: 'spring', viewValue: 'Spring'},
-
+    { value: 'summer', viewValue: 'Summer' },
+    { value: 'autumn', viewValue: 'Autumn' },
+    { value: 'spring', viewValue: 'Spring' },
   ];
 
   // Pagination
@@ -62,14 +57,13 @@ export class RevinewComponent implements OnInit {
   @ViewChild('matSchoolSelect') matSchoolSelect: MatSelect;
   @ViewChild('matSemesterSelect') matSemesterSelect: MatSelect;
   @ViewChild('matYearSelect') matYearSelect: MatSelect;
-  
 
   // DOWNLOADABLE
   dataTypeFormat = 'excel';
 
   // Store Product
 
-  product: any = null; //school
+  revinewList: any[] = []; //school
 
   public lineChartType: ChartType = 'bar';
   public barChartOptions = {
@@ -105,10 +99,9 @@ export class RevinewComponent implements OnInit {
     private uiService: UiService,
 
     private utilsService: UtilsService,
-    private fb:FormBuilder,
-    private sectionService:SectionService,
-  ) {
-  }
+    private fb: FormBuilder,
+    private sectionService: SectionService
+  ) {}
 
   ngOnInit(): void {
     // GET PAGE FROM QUERY PARAM
@@ -123,116 +116,179 @@ export class RevinewComponent implements OnInit {
     this.initFormValue();
   }
 
-  initFormValue(){
-    this.dataForm=this.fb.group({
-      school:[],
-      startingSemester:[],
-      endingSemester:[],
-      startingYear:[],
-      endingYear:[],
-    })
+  initFormValue() {
+    this.dataForm = this.fb.group({
+      school: [],
+      startingSemester: [],
+      endingSemester: [],
+      startingYear: [],
+      endingYear: [],
+    });
   }
 
-  onSubmitQuery(){
-    console.log(this.dataForm.value)
-    let flag=this.dataForm.value.startingSemester;
-    let semester=''
-    for (let index = this.dataForm.value.startingYear; index <= this.dataForm.value.endingYear; index++) {
-      let sIndex=0;
-      const school=this.dataForm.value.school;
-      const year=index;
-      if(flag === 'summer'){
-        let query1={
-          school:school,
-          year:year,
-          semester:'Summer'
-        }
-       this.sectionService.getFilturedRevinew(query1)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-       let query2={
-        school:school,
-        year:year,
-        semester:'Autumn'
+  onSubmitQuery() {
+    console.log(this.dataForm.value);
+    let flag = this.dataForm.value.startingSemester;
+    let semester = '';
+    for (
+      let index = this.dataForm.value.startingYear;
+      index <= this.dataForm.value.endingYear;
+      index++
+    ) {
+      let sIndex = 0;
+      const school = this.dataForm.value.school;
+      const year = index;
+      if (flag === 'summer') {
+        let query1 = {
+          school: school,
+          year: year,
+          semester: 'Summer',
+        };
+        this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Summer' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Summer',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+        let query2 = {
+          school: school,
+          year: year,
+          semester: 'Autumn',
+        };
+        this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Autumn' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Autumn',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+        let query3 = {
+          school: school,
+          year: year,
+          semester: 'Spring',
+        };
+        this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Spring' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Spring',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+      } else if (flag === 'autumn') {
+        let query1 = {
+          school: school,
+          year: year,
+          semester: 'Autumn',
+        };
+        this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Autumn' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Autumn',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+        let query2 = {
+          school: school,
+          year: year,
+          semester: 'Spring',
+        };
+        this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Spring' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Spring',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+        let query3 = {
+          school: school,
+          year: year,
+          semester: 'Summer',
+        };
+        this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Summer' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Summer',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+      } else {
+        let query2 = {
+          school: school,
+          year: year,
+          semester: 'Spring',
+        };
+        this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Spring' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Spring',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+        let query3 = {
+          school: school,
+          year: year,
+          semester: 'Summer',
+        };
+        this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Summer' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Summer',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
+        let query1 = {
+          school: school,
+          year: year,
+          semester: 'Autumn',
+        };
+        this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
+          console.log(res.data);
+          this.revinewList.push({ ...res.data, semester: 'Autumn' });
+          // if (res.data) {
+          //   const data = {
+          //     school: res.data.SCHOOL_ID,
+          //     semester: 'Autumn',
+          //     revinew: res.data.data,
+          //   };
+          // }
+        });
       }
-       this.sectionService.getFilturedRevinew(query2)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-       let query3={
-        school:school,
-        year:year,
-        semester:'Spring'
-      }
-       this.sectionService.getFilturedRevinew(query3)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-      }
-      else if (flag === 'autumn'){
-        let query1={
-          school:school,
-          year:year,
-          semester:'Autumn'
-        }
-       this.sectionService.getFilturedRevinew(query1)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-       let query2={
-        school:school,
-        year:year,
-        semester:'Spring'
-      }
-       this.sectionService.getFilturedRevinew(query2)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-       let query3={
-        school:school,
-        year:year,
-        semester:'Summer'
-      }
-       this.sectionService.getFilturedRevinew(query3)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-      }
-      else{
-        
-       let query2={
-        school:school,
-        year:year,
-        semester:'Spring'
-      }
-       this.sectionService.getFilturedRevinew(query2)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-       let query3={
-        school:school,
-        year:year,
-        semester:'Summer'
-      }
-       this.sectionService.getFilturedRevinew(query3)
-       .subscribe(res=>{
-         console.log(res.data)
-       })
-       let query1={
-        school:school,
-        year:year,
-        semester:'Autumn'
-      }
-     this.sectionService.getFilturedRevinew(query1)
-     .subscribe(res=>{
-       console.log(res.data)
-     })
-      }
-      // console.log(school+year+semester)
+      console.log(this.revinewList);
       // this.sectionService.getFilturedRevinew()
     }
-
   }
 
   /**
@@ -257,22 +313,12 @@ export class RevinewComponent implements OnInit {
    * HTTP REQ
    */
 
-
-  private getAllSchools(){
-    this.schoolService.getAllSchools()
-    .subscribe(res=>{
+  private getAllSchools() {
+    this.schoolService.getAllSchools().subscribe((res) => {
       console.log(res.data);
-      this.schools=res.data;
-    })
+      this.schools = res.data;
+    });
   }
-
-
-
-
- 
-
-  
- 
 
   /**
    * PAGINATION CHANGE
@@ -290,7 +336,7 @@ export class RevinewComponent implements OnInit {
    * ON REMOVE
    */
   onClearFilter() {
-   this.dataForm.reset();
+    this.dataForm.reset();
     // this.getAllProducts();
   }
 
