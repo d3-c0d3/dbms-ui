@@ -51,6 +51,8 @@
           </mat-select>
         </mat-form-field>
 
+
+
         <div class="clear">
           <button mat-raised-button color="warn" (click)="onClearFilter()">
             <mat-icon>clear</mat-icon>
@@ -117,7 +119,7 @@
       <tr class="table-head">
         <th scope="col">{{'Semester'}}</th>
         <th scope="col">{{'Year'}}</th>
-        
+
         <th scope="col">{{'School  '}}</th>
         <!-- <th scope="col">{{'Credit hours'}}</th> -->
         <th scope="col">{{'Total Revinew'}}</th>
@@ -162,7 +164,7 @@
   </div>
 </ng-template>
 
-<div  class="chartdata">
+<div class="chartdata">
   <div class="chart-section">
     <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
       [legend]="barChartLegend" [type]="lineChartType">

@@ -3,6 +3,7 @@ import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ChartType } from 'chart.js';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import { YEARS } from 'src/app/core/utils/date-data';
@@ -33,7 +34,7 @@ export class UnusedSectionAnalysisComponent implements OnInit {
   revinew: any[] = []; //revinew
   private holdPrevData: any[] = [];
   schools: any[] = ['sets']; //school
-  years=YEARS
+  years = YEARS;
   semesters: Select[] = [
     { value: 'Summer', viewValue: 'Summer' },
     { value: 'Autumn', viewValue: 'Autumn' },
@@ -45,7 +46,7 @@ export class UnusedSectionAnalysisComponent implements OnInit {
   totalProducts = 0;
   productsPerPage = 24;
   totalProductsStore = 0;
-  unusedSections=[]
+  unusedSections = [];
   // Query
   query: any = null;
 
@@ -71,8 +72,29 @@ export class UnusedSectionAnalysisComponent implements OnInit {
     private reloadService: ReloadService,
     private uiService: UiService,
     private utilsService: UtilsService,
-    private sectionService:SectionService,
+    private sectionService: SectionService
   ) {}
+
+  public lineChartType: ChartType = 'bar';
+  public barChartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+  };
+  public barChartLabels = [
+    '2006',
+    '2007',
+    '2008',
+    '2009',
+    '2010',
+    '2011',
+    '2012',
+  ];
+  public barChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
+  ];
 
   ngOnInit(): void {
     // GET PAGE FROM QUERY PARAM
@@ -156,24 +178,23 @@ export class UnusedSectionAnalysisComponent implements OnInit {
   }
 
   onSelectSemesters(data) {
-    console.log(data)
-    this.selectedSemester=data
+    console.log(data);
+    this.selectedSemester = data;
   }
 
   onSelectYear(data) {
-    console.log(data)
-    this.selectedYear=data;
+    console.log(data);
+    this.selectedYear = data;
   }
-  onSubmit(){
-    const data={
-      year:this.selectedYear,
-      semester:this.selectedSemester
-    }
-    this.sectionService.getAllUnusedSections(data)
-    .subscribe(res=>{
-      console.log(res.data)
-      this.unusedSections=res.data;
-    })
+  onSubmit() {
+    const data = {
+      year: this.selectedYear,
+      semester: this.selectedSemester,
+    };
+    this.sectionService.getAllUnusedSections(data).subscribe((res) => {
+      console.log(res.data);
+      this.unusedSections = res.data;
+    });
   }
 
   /**
