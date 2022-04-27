@@ -5,11 +5,13 @@ import { MatSelect } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
+import { YEARS } from 'src/app/core/utils/date-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
 import { ReloadService } from 'src/app/services/reload.service';
 import { RevinewService } from 'src/app/services/revinew.service';
 import { SchoolService } from 'src/app/services/school.service';
+import { SectionService } from 'src/app/services/section.service';
 import { UiService } from 'src/app/services/ui.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
@@ -31,11 +33,11 @@ export class UnusedSectionAnalysisComponent implements OnInit {
   revinew: any[] = []; //revinew
   private holdPrevData: any[] = [];
   schools: any[] = ['sets']; //school
-  semesters: any[] = []; //semester
-  stockTypes: Select[] = [
-    { value: { quantity: { $gt: 0 } }, viewValue: 'Summer' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Autumn' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Spring' },
+  years=YEARS
+  semesters: Select[] = [
+    { value: 'Summer', viewValue: 'Summer' },
+    { value: 'Autumn', viewValue: 'Autumn' },
+    { value: 'Spring', viewValue: 'Spring' },
   ];
 
   // Pagination
@@ -43,14 +45,15 @@ export class UnusedSectionAnalysisComponent implements OnInit {
   totalProducts = 0;
   productsPerPage = 24;
   totalProductsStore = 0;
-
+  unusedSections=[]
   // Query
   query: any = null;
 
   // Select View Child
   @ViewChild('matSchoolSelect') matCatSelect: MatSelect;
   @ViewChild('matSemesterSelect') matSubCatSelect: MatSelect;
-
+  selectedYear;
+  selectedSemester;
   // DOWNLOADABLE
   dataTypeFormat = 'excel';
 
@@ -67,7 +70,8 @@ export class UnusedSectionAnalysisComponent implements OnInit {
     private dialog: MatDialog,
     private reloadService: ReloadService,
     private uiService: UiService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private sectionService:SectionService,
   ) {}
 
   ngOnInit(): void {
@@ -151,27 +155,25 @@ export class UnusedSectionAnalysisComponent implements OnInit {
     }
   }
 
-  onSelectSemesters(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      const subCategory = event.source.value; //as DataType
-      this.query = { ...this.query, ...{ subCategory: subCategory._id } };
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
+  onSelectSemesters(data) {
+    console.log(data)
+    this.selectedSemester=data
   }
 
-  onSelectStockType(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      this.query = event.source.value;
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
+  onSelectYear(data) {
+    console.log(data)
+    this.selectedYear=data;
+  }
+  onSubmit(){
+    const data={
+      year:this.selectedYear,
+      semester:this.selectedSemester
     }
+    this.sectionService.getAllUnusedSections(data)
+    .subscribe(res=>{
+      console.log(res.data)
+      this.unusedSections=res.data;
+    })
   }
 
   /**

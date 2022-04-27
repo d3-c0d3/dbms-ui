@@ -70,22 +70,15 @@ export class RevinewComponent implements OnInit {
     scaleShowVerticalLines: false,
     responsive: true,
   };
-  public barChartLabels = [
-    'cse101',
-    'cse203',
-    'cse104',
-    'cse301',
-    'cse223',
-    'cse230',
-    'cse330',
-    'cse150',
-  ];
+
+  showChart=false;
+
+  public barChartLabels = [];
 
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData = [
-    { data: [4, 6, 12, 3, 7, 5, 2, 5], label: 'Sections' },
-    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+    { data: [], label: 'Revinew' },
   ];
 
   constructor(
@@ -118,16 +111,18 @@ export class RevinewComponent implements OnInit {
 
   initFormValue() {
     this.dataForm = this.fb.group({
-      school: [],
-      startingSemester: [],
-      endingSemester: [],
-      startingYear: [],
-      endingYear: [],
+      school: [null],
+      startingSemester: [null],
+      endingSemester: [null],
+      startingYear: [null],
+      endingYear: [null],
     });
   }
 
   onSubmitQuery() {
-    console.log(this.dataForm.value);
+    this.revinewList=[];
+    // console.log(this.barChartData[0]);
+    // console.log(this.dataForm.value);
     let flag = this.dataForm.value.startingSemester;
     let semester = '';
     for (
@@ -135,6 +130,10 @@ export class RevinewComponent implements OnInit {
       index <= this.dataForm.value.endingYear;
       index++
     ) {
+      if(index===this.dataForm.value.endingYear-1){
+        this.showChart=true
+        console.log(this.barChartData)
+      }
       let sIndex = 0;
       const school = this.dataForm.value.school;
       const year = index;
@@ -145,15 +144,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Summer',
         };
         this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Summer' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Summer',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query1.semester+query1.year)
+          this.revinewList.push({ ...res.data, semester: 'Summer',year:year });
+          
         });
         let query2 = {
           school: school,
@@ -161,15 +156,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Autumn',
         };
         this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Autumn' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Autumn',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query2.semester+query2.year)
+          this.revinewList.push({ ...res.data, semester: 'Autumn',year:year });
+          
         });
         let query3 = {
           school: school,
@@ -177,15 +168,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Spring',
         };
         this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Spring' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Spring',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query3.semester+query3.year)
+          this.revinewList.push({ ...res.data, semester: 'Spring',year:year });
+          
         });
       } else if (flag === 'autumn') {
         let query1 = {
@@ -194,15 +181,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Autumn',
         };
         this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Autumn' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Autumn',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query1.semester+query1.year)
+          this.revinewList.push({ ...res.data, semester: 'Autumn',year:year });
+          
         });
         let query2 = {
           school: school,
@@ -210,15 +193,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Spring',
         };
         this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Spring' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Spring',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query2.semester+query2.year)
+          this.revinewList.push({ ...res.data, semester: 'Spring',year:year });
+          
         });
         let query3 = {
           school: school,
@@ -226,15 +205,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Summer',
         };
         this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Summer' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Summer',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query3.semester+query3.year)
+          this.revinewList.push({ ...res.data, semester: 'Summer',year:year });
+          
         });
       } else {
         let query2 = {
@@ -243,15 +218,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Spring',
         };
         this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Spring' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Spring',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query1.semester+query1.year)
+          this.revinewList.push({ ...res.data, semester: 'Spring',year:year });
+          
         });
         let query3 = {
           school: school,
@@ -259,15 +230,11 @@ export class RevinewComponent implements OnInit {
           semester: 'Summer',
         };
         this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Summer' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Summer',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query2.semester+query2.year)
+          this.revinewList.push({ ...res.data, semester: 'Summer',year:year });
+          
         });
         let query1 = {
           school: school,
@@ -275,20 +242,18 @@ export class RevinewComponent implements OnInit {
           semester: 'Autumn',
         };
         this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
-          console.log(res.data);
-          this.revinewList.push({ ...res.data, semester: 'Autumn' });
-          // if (res.data) {
-          //   const data = {
-          //     school: res.data.SCHOOL_ID,
-          //     semester: 'Autumn',
-          //     revinew: res.data.data,
-          //   };
-          // }
+          // console.log(res.data);
+          this.barChartData[0].data.push(...res.data)
+          this.barChartLabels.push(query3.semester+query3.year)
+          this.revinewList.push({ ...res.data, semester: 'Autumn',year:year });
+          
         });
       }
-      console.log(this.revinewList);
+      // console.log(this.revinewList);
+      
       // this.sectionService.getFilturedRevinew()
     }
+    
   }
 
   /**
@@ -315,7 +280,7 @@ export class RevinewComponent implements OnInit {
 
   private getAllSchools() {
     this.schoolService.getAllSchools().subscribe((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       this.schools = res.data;
     });
   }
@@ -337,6 +302,7 @@ export class RevinewComponent implements OnInit {
    */
   onClearFilter() {
     this.dataForm.reset();
+    this.revinewList=[]
     // this.getAllProducts();
   }
 

@@ -18,4 +18,7 @@ export class SectionService {
   getFilturedRevinew(data){
     return this.httpClient.post<{ data:any, message: string }>( API_SEMESTER+ 'get-filtured-revinew', data);
   }
+  getAllUnusedSections(data){
+    return this.httpClient.post<{ data:any, message: string }>( API_SEMESTER+ 'get-all-unused-sections', data);
+  }
 }

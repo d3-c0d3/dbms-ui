@@ -1,28 +1,28 @@
 <div class="container-fluid">
-
+  <form [formGroup]="dataForm" (ngSubmit)="onSubmitQuery()" #templateForm="ngForm" fxLayout="column"
+  fxLayoutAlign="space-around center">
   <div class="filter-area">
     <div class="select-views">
 
       <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label> Starting Year</mat-label>
-        <mat-select #matSubCatSelect>
-          <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
+        <mat-label> Select Year</mat-label>
+        <mat-select #matSubCatSelect formControlName="year">
+          <mat-option *ngFor="let data of yearSelector" [value]="data" >
             <span>{{data}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label>Select Starting semester</mat-label>
-        <mat-select #matStockSelect>
-          <mat-option *ngFor="let data of stockTypes" [value]="data.value"
-            (onSelectionChange)="onSelectStockType($event)">
+        <mat-label>Select  semester</mat-label>
+        <mat-select #matStockSelect formControlName="semester">
+          <mat-option *ngFor="let data of semesters" [value]="data.value">
             <span>{{data.viewValue}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="mat-filter-select">
+      <!-- <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Ending Year</mat-label>
         <mat-select #matSubCatSelect>
           <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
@@ -38,21 +38,27 @@
             <span>{{data}}</span>
           </mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Class Size</mat-label>
-        <mat-select #matCatSelect>
-          <mat-option *ngFor="let data of schools" [value]="data" (onSelectionChange)="onSelectSchool($event)">
-            <span>{{data.categoryName}}</span>
+        <mat-select #matCatSelect formControlName="sectionSize">
+          <mat-option *ngFor="let data of sectionSize" [value]="data">
+            <span>{{data.viewValue}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <div class="clear" *ngIf="query">
+      <div class="clear" >
         <button mat-raised-button color="warn" (click)="onClearFilter()">
           <mat-icon>clear</mat-icon>
           Clear Filter
+        </button>
+      </div>
+      <div class="clear" >
+        <button mat-raised-button color="warn" type="submit" >
+          <mat-icon>success</mat-icon>
+         Submit
         </button>
       </div>
     </div>
@@ -76,7 +82,7 @@
   </div>
 
   <!--  {{products | json}}-->
-
+  </form>
 
   <div class="top-action">
 
@@ -94,7 +100,7 @@
     <table>
       <thead>
         <tr class="table-head">
-          <th scope="col">{{'Semester'}}</th>
+          <!-- <th scope="col">{{'Semester'}}</th> -->
           <th scope="col">{{'Department Name '}}</th>
           <th scope="col">{{'No of section'}}</th>
           <!-- <th scope="col">{{'Total Revinew'}}</th>
@@ -103,13 +109,11 @@
         </tr>
       </thead> <!-- End Table Head -->
       <tr
-        *ngFor="let data of revinew | paginate: { itemsPerPage: productsPerPage, currentPage: currentPage, totalItems: totalProducts }; let i = index">
-        <td [attr.data-label]="'Name'">{{data.productName}}</td>
+        *ngFor="let data of sectionsList ; let i = index">
+        <td [attr.data-label]="'Department'">{{data.DEPARTMENT_ID}}</td>
 
-        <td [attr.data-label]="'SKU'">{{data.sku}}</td>
-        <td [attr.data-label]="'Category'">{{data.category?.categoryName}}</td>
-        <td [attr.data-label]="'Retail Price'">৳ {{data.price }}</td>
-        <td [attr.data-label]="'Sale Price'">৳ {{data }}</td>
+        <td [attr.data-label]="'Summary'">{{data.summary}}</td>
+
 
 
       </tr><!-- End Table Body -->

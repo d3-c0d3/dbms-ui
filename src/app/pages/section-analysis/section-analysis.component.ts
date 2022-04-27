@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatOption, MatOptionSelectionChange } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelect } from '@angular/material/select';
@@ -9,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { YEARS } from 'src/app/core/utils/date-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
+import { DepartmentService } from 'src/app/services/department.service';
 import { ReloadService } from 'src/app/services/reload.service';
 import { RevinewService } from 'src/app/services/revinew.service';
 import { SchoolService } from 'src/app/services/school.service';
@@ -21,6 +23,7 @@ import { UtilsService } from 'src/app/services/utils.service';
   styleUrls: ['./section-analysis.component.scss'],
 })
 export class SectionAnalysisComponent implements OnInit {
+  dataForm: FormGroup;
   // Subscriptions
   private subProduct: Subscription;
   private subCat: Subscription;
@@ -32,15 +35,21 @@ export class SectionAnalysisComponent implements OnInit {
   yearSelector = YEARS;
 
   // Store Data
-  revinew: any[] = []; //revinew
+  sectionsList: any[] = []; //revinew
   private holdPrevData: any[] = [];
   schools: any[] = ['sets']; //school
-  semesters: any[] = []; //semester
-  stockTypes: Select[] = [
-    { value: { quantity: { $gt: 0 } }, viewValue: 'Summer' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Autumn' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Spring' },
+ 
+  semesters: Select[] = [
+    { value: 'Summer', viewValue: 'Summer' },
+    { value: 'Autumn', viewValue: 'Autumn' },
+    { value: 'Spring', viewValue: 'Spring' },
   ];
+  sectionSize=[
+    {viewValue:'1-10',uRange:'1',lRange:'10'},
+    {viewValue:'11-20',uRange:'11',lRange:'20'},
+    {viewValue:'21-30',uRange:'21',lRange:'30'},
+    {viewValue:'31-35',uRange:'31',lRange:'35'},
+  ]
 
   // Pagination
   currentPage = 1;
@@ -68,20 +77,13 @@ export class SectionAnalysisComponent implements OnInit {
     responsive: true,
   };
   public barChartLabels = [
-    'cse101',
-    'cse203',
-    'cse104',
-    'cse301',
-    'cse223',
-    'cse230',
-    'cse330',
-    'cse150',
+    
   ];
 
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData = [
-    { data: [4, 6, 12, 3, 7, 5, 2, 5], label: 'Sections' },
+    { data: [], label: 'Sections' },
     // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
   ];
 
@@ -94,7 +96,9 @@ export class SectionAnalysisComponent implements OnInit {
     private dialog: MatDialog,
     private reloadService: ReloadService,
     private uiService: UiService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private fb: FormBuilder,
+    private departmentService:DepartmentService,
   ) {}
 
   ngOnInit(): void {
@@ -106,6 +110,7 @@ export class SectionAnalysisComponent implements OnInit {
         this.currentPage = 1;
       }
     });
+    
 
     // OBSERVABLE
     // this.reloadService.refreshRevinew$
@@ -115,6 +120,7 @@ export class SectionAnalysisComponent implements OnInit {
 
     // GET
     // this.getAllSchools();
+    this.initFormValue();
   }
 
   /**
@@ -134,25 +140,46 @@ export class SectionAnalysisComponent implements OnInit {
   //     }
   //   });
   // }
+  initFormValue() {
+    this.dataForm = this.fb.group({
+      year: [null],
+      semester: [null],
+     sectionSize: [null],
+      
+    });
+  }
+  onSubmitQuery(){
+   
+    console.log(this.dataForm.value)
+    const data={
+      year:this.dataForm.value.year,
+      semester:this.dataForm.value.semester,
+      urange:this.dataForm.value.sectionSize.uRange,
+      lrange:this.dataForm.value.sectionSize.lRange,
+      
+    }
+    this.departmentService.getSectionByCapacity(data)
+    .subscribe(res=>{
+      this.barChartData[0].data=[]
+      this.barChartLabels=[]
+      console.log(res.data)
+      this.sectionsList=res.data;
+      res.data.forEach(element => {
+        
+        this.barChartData[0].data.push(element.summary)
+        this.barChartLabels.push(element.DEPARTMENT_ID)
+      });
+      console.log(this.barChartData)
+    })
 
+  }
   /**
    * HTTP REQ
    */
 
-  private getAllProducts() {
-    this.spinner.show();
 
-    const pagination: Pagination = {
-      pageSize: this.productsPerPage.toString(),
-      currentPage: this.currentPage.toString(),
-    };
 
-    const sort = { createdAt: -1 };
-  }
-
-  private getAllCategory() {}
-
-  private getAllSubCategory(categoryId: string) {}
+ 
 
   /**
    * PAGINATION CHANGE
@@ -161,58 +188,13 @@ export class SectionAnalysisComponent implements OnInit {
     this.router.navigate([], { queryParams: { page: event } });
   }
 
-  /**
-   * SELECTION CHANGE
-   * FILTER
-   */
-  onSelectSchool(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      const category = event.source.value;
-      this.query = { category: category._id };
-      this.getAllSubCategory(category._id);
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
-  }
-
-  onSelectSemesters(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      const subCategory = event.source.value; //as DataType
-      this.query = { ...this.query, ...{ subCategory: subCategory._id } };
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
-  }
-
-  onSelectStockType(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      this.query = event.source.value;
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
-  }
+  
 
   /**
    * ON REMOVE
    */
   onClearFilter() {
-    this.matCatSelect.options.forEach((data: MatOption) => data.deselect());
-    this.matSubCatSelect.options.forEach((data: MatOption) => data.deselect());
-    this.query = null;
-    this.router.navigate([], {
-      queryParams: { page: null },
-      queryParamsHandling: 'merge',
-    });
-    this.getAllProducts();
+   this.dataForm.reset();
   }
 
   /**

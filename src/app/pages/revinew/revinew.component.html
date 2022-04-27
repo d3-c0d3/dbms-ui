@@ -116,21 +116,23 @@
     <thead>
       <tr class="table-head">
         <th scope="col">{{'Semester'}}</th>
+        <th scope="col">{{'Year'}}</th>
+        
         <th scope="col">{{'School  '}}</th>
         <!-- <th scope="col">{{'Credit hours'}}</th> -->
         <th scope="col">{{'Total Revinew'}}</th>
 
-        <th scope="col">{{'Change % '}}</th>
+        <!-- <th scope="col">{{'Change % '}}</th> -->
 
       </tr>
     </thead> <!-- End Table Head -->
     <tr *ngFor="let data of revinewList ; let i = index">
       <td [attr.data-label]="'Semester'">{{data?.semester}}</td>
-
+      <td [attr.data-label]="'Year'">{{data?.year}}</td>
       <td [attr.data-label]="'School'">{{data[0]?.SCHOOL_ID}}</td>
       <!-- <td [attr.data-label]="'Category'">{{data.category?.categoryName}}</td> -->
       <td [attr.data-label]="'Total revinew'">৳ {{data[0]?.data }}</td>
-      <td [attr.data-label]="'Change'">৳ {{data[0]?.data }}</td>
+      <!-- <td [attr.data-label]="'Change'">৳ {{data[0]?.data }}</td> -->
 
 
     </tr><!-- End Table Body -->
@@ -160,7 +162,7 @@
   </div>
 </ng-template>
 
-<div class="chartdata">
+<div  class="chartdata">
   <div class="chart-section">
     <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
       [legend]="barChartLegend" [type]="lineChartType">
