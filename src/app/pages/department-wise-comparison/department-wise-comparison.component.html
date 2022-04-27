@@ -5,38 +5,19 @@
 
 
       <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label> Starting Year</mat-label>
+        <mat-label> Select Year</mat-label>
         <mat-select #matSubCatSelect>
-          <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
+          <mat-option *ngFor="let data of years" [value]="data" (onSelectionChange)="onSelectYear(data)">
             <span>{{data}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label>Select Starting semester</mat-label>
+        <mat-label>Select  semester</mat-label>
         <mat-select #matStockSelect>
-          <mat-option *ngFor="let data of stockTypes" [value]="data.value"
-            (onSelectionChange)="onSelectStockType($event)">
-            <span>{{data.viewValue}}</span>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label>Ending Year</mat-label>
-        <mat-select #matSubCatSelect>
-          <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
-            <span>{{data}}</span>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="mat-filter-select">
-        <mat-label>Select ending semester</mat-label>
-        <mat-select #matStockSelect>
-          <mat-option *ngFor="let data of stockTypes" [value]="data.value"
-            (onSelectionChange)="onSelectStockType($event)">
+          <mat-option *ngFor="let data of semesters" [value]="data.value"
+            (onSelectionChange)="onSelectSemesters(data.value)">
             <span>{{data.viewValue}}</span>
           </mat-option>
         </mat-select>
@@ -45,11 +26,25 @@
       <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Slot</mat-label>
         <mat-select #matCatSelect>
-          <mat-option *ngFor="let data of schools" [value]="data" (onSelectionChange)="onSelectSchool($event)">
-            <span>{{data.categoryName}}</span>
+          <mat-option *ngFor="let data of slots" [value]="data" (onSelectionChange)="onSelectSlot(data)">
+            <span>{{data}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field appearance="outline" class="mat-filter-select">
+        <mat-label>Class Size</mat-label>
+        <mat-select #matCat1Select >
+          <mat-option *ngFor="let data of sectionSize" [value]="data" (onSelectionChange)="onSelectRange(data)">
+            <span>{{data.viewValue}}</span>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="clear" >
+        <button mat-raised-button color="warn" (click)="onSubmit()">
+          <mat-icon>success</mat-icon>
+          Submit
+        </button>
+      </div>
 
       <div class="clear" *ngIf="query">
         <button mat-raised-button color="warn" (click)="onClearFilter()">

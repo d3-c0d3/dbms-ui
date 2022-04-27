@@ -14,7 +14,7 @@
       <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label> Select Year</mat-label>
         <mat-select #matSubCatSelect>
-          <mat-option *ngFor="let data of yearSelector" [value]="data" (onSelectionChange)="onSelectSemesters($event)">
+          <mat-option *ngFor="let data of years" [value]="data" (onSelectionChange)="onSelectYear(data)">
             <span>{{data}}</span>
           </mat-option>
         </mat-select>
@@ -22,13 +22,18 @@
       <mat-form-field appearance="outline" class="mat-filter-select">
         <mat-label>Select semester</mat-label>
         <mat-select>
-          <mat-option *ngFor="let data of stockTypes" [value]="data.value"
-            (onSelectionChange)="onSelectStockType($event)">
+          <mat-option *ngFor="let data of semesters" [value]="data.value"
+            (onSelectionChange)="onSelectSemesters(data.value)">
             <span>{{data.viewValue}}</span>
           </mat-option>
         </mat-select>
       </mat-form-field>
-
+      <mat-form-field appearance="outline">
+        <mat-label>range</mat-label>
+        <input [(ngModel)]="range" matInput placeholder="range" >
+        <mat-error>This field is required</mat-error>
+      </mat-form-field>
+  
       <!-- <mat-form-field appearance="outline" class="mat-filter-select">
           <mat-label> Ending Year</mat-label>
           <mat-select #matSubCatSelect>
@@ -46,6 +51,12 @@
             </mat-option>
           </mat-select>
         </mat-form-field> -->
+        <div class="clear">
+          <button mat-raised-button color="warn" (click)="onSubmit()">
+            <mat-icon>success</mat-icon>
+           Submit
+          </button>
+        </div>
 
       <div class="clear" *ngIf="query">
         <button mat-raised-button color="warn" (click)="onClearFilter()">
@@ -100,7 +111,7 @@
   </div>
 
 
-  <div class="data-section">
+  <!-- <div class="data-section">
     <mat-form-field appearance="outline">
       <mat-label>Courses</mat-label>
       <mat-select [(ngModel)]="selectedTerm" [formControl]="course" multiple>
@@ -110,5 +121,5 @@
   </div>
   <div>
     <button mat-button (click)="onSaveData()">save</button>
-  </div>
+  </div> -->
 </div>

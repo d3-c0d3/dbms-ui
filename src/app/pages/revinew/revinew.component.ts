@@ -65,20 +65,21 @@ export class RevinewComponent implements OnInit {
 
   revinewList: any[] = []; //school
 
+  
   public lineChartType: ChartType = 'bar';
   public barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true,
   };
-
-  showChart=false;
-
-  public barChartLabels = [];
+  public barChartLabels = [
+    
+  ];
 
   public barChartType = 'bar';
   public barChartLegend = true;
   public barChartData = [
-    { data: [], label: 'Revinew' },
+    { data: [], label: 'Sections' },
+    // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
   ];
 
   constructor(
@@ -120,6 +121,9 @@ export class RevinewComponent implements OnInit {
   }
 
   onSubmitQuery() {
+    this.barChartData=[
+      { data: [], label: 'Sections' },
+    ]
     this.revinewList=[];
     // console.log(this.barChartData[0]);
     // console.log(this.dataForm.value);
@@ -130,9 +134,9 @@ export class RevinewComponent implements OnInit {
       index <= this.dataForm.value.endingYear;
       index++
     ) {
-      if(index===this.dataForm.value.endingYear-1){
-        this.showChart=true
+      if(parseInt(index)===this.dataForm.value.endingYear-1){
         console.log(this.barChartData)
+        console.log(this.barChartLabels)
       }
       let sIndex = 0;
       const school = this.dataForm.value.school;
@@ -144,8 +148,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Summer',
         };
         this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query1.semester+query1.year)
           this.revinewList.push({ ...res.data, semester: 'Summer',year:year });
           
@@ -156,8 +160,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Autumn',
         };
         this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query2.semester+query2.year)
           this.revinewList.push({ ...res.data, semester: 'Autumn',year:year });
           
@@ -168,9 +172,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Spring',
         };
         this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
-          this.barChartLabels.push(query3.semester+query3.year)
+          // console.log(res.data[0].data);
+          // this.barChartData[0].data.pures.data[0].data          this.barChartLabels.push(query3.semester+query3.year)
           this.revinewList.push({ ...res.data, semester: 'Spring',year:year });
           
         });
@@ -181,8 +184,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Autumn',
         };
         this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
-          
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query1.semester+query1.year)
           this.revinewList.push({ ...res.data, semester: 'Autumn',year:year });
           
@@ -193,8 +196,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Spring',
         };
         this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query2.semester+query2.year)
           this.revinewList.push({ ...res.data, semester: 'Spring',year:year });
           
@@ -205,8 +208,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Summer',
         };
         this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query3.semester+query3.year)
           this.revinewList.push({ ...res.data, semester: 'Summer',year:year });
           
@@ -218,8 +221,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Spring',
         };
         this.sectionService.getFilturedRevinew(query2).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query1.semester+query1.year)
           this.revinewList.push({ ...res.data, semester: 'Spring',year:year });
           
@@ -230,8 +233,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Summer',
         };
         this.sectionService.getFilturedRevinew(query3).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query2.semester+query2.year)
           this.revinewList.push({ ...res.data, semester: 'Summer',year:year });
           
@@ -242,8 +245,8 @@ export class RevinewComponent implements OnInit {
           semester: 'Autumn',
         };
         this.sectionService.getFilturedRevinew(query1).subscribe((res) => {
-          // console.log(res.data);
-          this.barChartData[0].data.push(...res.data)
+          // console.log(res.data[0].data);
+          this.barChartData[0].data.push(res.data[0].data)
           this.barChartLabels.push(query3.semester+query3.year)
           this.revinewList.push({ ...res.data, semester: 'Autumn',year:year });
           

@@ -12,6 +12,7 @@ import { Select } from 'src/app/interfaces/select';
 import { ReloadService } from 'src/app/services/reload.service';
 import { RevinewService } from 'src/app/services/revinew.service';
 import { SchoolService } from 'src/app/services/school.service';
+import { SectionService } from 'src/app/services/section.service';
 import { UiService } from 'src/app/services/ui.service';
 import { UtilsService } from 'src/app/services/utils.service';
 
@@ -34,13 +35,25 @@ export class DepartmentWiseComparisonComponent implements OnInit {
   revinew: any[] = []; //revinew
   private holdPrevData: any[] = [];
   schools: any[] = ['sets']; //school
-  semesters: any[] = []; //semester
-  stockTypes: Select[] = [
-    { value: { quantity: { $gt: 0 } }, viewValue: 'Summer' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Autumn' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Spring' },
+  years = YEARS; //semester
+  semesters: Select[] = [
+    { value: 'Summer', viewValue: 'Summer' },
+    { value: 'Autumn', viewValue: 'Autumn' },
+    { value: 'Spring', viewValue: 'Spring' },
   ];
+  slots=[7,8]
+  sectionSize=[
+    {viewValue:'1-10',uRange:'1',lRange:'10'},
+    {viewValue:'11-20',uRange:'11',lRange:'20'},
+    {viewValue:'21-30',uRange:'21',lRange:'30'},
+    {viewValue:'31-35',uRange:'31',lRange:'35'},
+  ]
+  range
 
+  selectedYear;
+  selectedSemester;
+  selectedSlot;
+  comparisonList=[]
   // Pagination
   currentPage = 1;
   totalProducts = 0;
@@ -52,6 +65,7 @@ export class DepartmentWiseComparisonComponent implements OnInit {
 
   // Select View Child
   @ViewChild('matSchoolSelect') matCatSelect: MatSelect;
+  @ViewChild('matSchoolSelect') matCat1Select: MatSelect;
   @ViewChild('matSemesterSelect') matSubCatSelect: MatSelect;
 
   // DOWNLOADABLE
@@ -93,7 +107,8 @@ export class DepartmentWiseComparisonComponent implements OnInit {
     private dialog: MatDialog,
     private reloadService: ReloadService,
     private uiService: UiService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private sectionService:SectionService,
   ) {}
 
   ngOnInit(): void {
@@ -116,6 +131,26 @@ export class DepartmentWiseComparisonComponent implements OnInit {
     // this.getAllSchools();
   }
 
+  onSubmit(){
+    console.log(this.selectedSemester)
+    console.log(this.selectedYear)
+    console.log(this.selectedSlot)
+    console.log(this.range)
+    const data={
+      semseter:this.selectedSemester,
+      year:this.selectedYear,
+      slot:this.selectedSlot,
+      urange:this.range.uRange,
+      lrange:this.range.lRange,
+      
+    }
+    this.sectionService.getSectionWiseComparison(data)
+    .subscribe(res=>{
+      console.log(res.data);
+      this.comparisonList=res.data;
+    })
+    
+  }
   /**
    * COMPONENT DIALOG VIEW
    */
@@ -138,20 +173,7 @@ export class DepartmentWiseComparisonComponent implements OnInit {
    * HTTP REQ
    */
 
-  private getAllProducts() {
-    this.spinner.show();
-
-    const pagination: Pagination = {
-      pageSize: this.productsPerPage.toString(),
-      currentPage: this.currentPage.toString(),
-    };
-
-    const sort = { createdAt: -1 };
-  }
-
-  private getAllCategory() {}
-
-  private getAllSubCategory(categoryId: string) {}
+  
 
   /**
    * PAGINATION CHANGE
@@ -164,40 +186,23 @@ export class DepartmentWiseComparisonComponent implements OnInit {
    * SELECTION CHANGE
    * FILTER
    */
-  onSelectSchool(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      const category = event.source.value;
-      this.query = { category: category._id };
-      this.getAllSubCategory(category._id);
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
+   onSelectYear(data) {
+   console.log(data);
+   this.selectedYear=data;
   }
 
-  onSelectSemesters(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      const subCategory = event.source.value; //as DataType
-      this.query = { ...this.query, ...{ subCategory: subCategory._id } };
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
+  onSelectSemesters(data) {
+    console.log(data);
+    this.selectedSemester=data;
   }
 
-  onSelectStockType(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      this.query = event.source.value;
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
+  onSelectSlot(data) {
+    console.log(data);
+    this.selectedSlot=data;
+  }
+  onSelectRange(data){
+    console.log(data);
+    this.range=data;
   }
 
   /**
@@ -211,7 +216,7 @@ export class DepartmentWiseComparisonComponent implements OnInit {
       queryParams: { page: null },
       queryParamsHandling: 'merge',
     });
-    this.getAllProducts();
+   
   }
 
   /**

@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { YEARS } from 'src/app/core/utils/date-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Select } from 'src/app/interfaces/select';
+import { CourseService } from 'src/app/services/course.service';
 import { ReloadService } from 'src/app/services/reload.service';
 import { RevinewService } from 'src/app/services/revinew.service';
 import { SchoolService } from 'src/app/services/school.service';
@@ -39,11 +40,11 @@ export class CourseComponent implements OnInit {
   revinew: any[] = []; //revinew
   private holdPrevData: any[] = [];
   schools: any[] = ['sets']; //school
-  semesters: any[] = []; //semester
-  stockTypes: Select[] = [
-    { value: { quantity: { $gt: 0 } }, viewValue: 'Summer' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Autumn' },
-    { value: { quantity: { $lte: 0 } }, viewValue: 'Spring' },
+  years = YEARS; //semester
+  semesters: Select[] = [
+    { value: 'summer', viewValue: 'Summer' },
+    { value: 'autumn', viewValue: 'Autumn' },
+    { value: 'spring', viewValue: 'Spring' },
   ];
   //selected course
   selectedTerm: NgModel;
@@ -59,7 +60,10 @@ export class CourseComponent implements OnInit {
   // Select View Child
   @ViewChild('matSchoolSelect') matCatSelect: MatSelect;
   @ViewChild('matSemesterSelect') matSubCatSelect: MatSelect;
-
+  // @ViewChild('range') matSubCatSelect: MatSelect;
+  range
+  selectedYear
+  selectedSemester
   // DOWNLOADABLE
   dataTypeFormat = 'excel';
 
@@ -68,25 +72,18 @@ export class CourseComponent implements OnInit {
   product: any = null; //school
 
   //chart
-  public lineChartType: ChartType = 'bar';
+  public lineChartType: ChartType = 'doughnut';
   public barChartOptions = {
     scaleShowVerticalLines: false,
     responsive: true,
   };
   public barChartLabels = [
-    'cse101',
-    'cse203',
-    'cse104',
-    'cse301',
-    'cse223',
-    'cse230',
-    'cse330',
-    'cse150',
+    
   ];
-  public barChartType = 'bar';
+  public barChartType = 'Doughnut';
   public barChartLegend = true;
   public barChartData = [
-    { data: [4, 6, 12, 3, 7, 5, 2, 5], label: 'Sections' },
+    { data: [], label: 'Sections' },
     // {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
   ];
   courses: string[] = this.barChartLabels;
@@ -100,7 +97,8 @@ export class CourseComponent implements OnInit {
     private reloadService: ReloadService,
     private uiService: UiService,
     private utilsService: UtilsService,
-    private sectionService: SectionService
+    private sectionService: SectionService,
+    private courseService:CourseService,
   ) {}
 
   ngOnInit(): void {
@@ -138,6 +136,33 @@ export class CourseComponent implements OnInit {
    * HTTP REQ
    */
   //
+  onSubmit(){
+    this.barChartData=[
+      { data: [], label: 'Sections' },
+    ]
+    console.log(this.range)
+    console.log(this.selectedSemester)
+    console.log(this.selectedYear)
+const data={
+  year:this.selectedYear,
+  semester:this.selectedSemester,
+  range:this.range,
+}
+    this.courseService.getCourseEnrollmentData(data)
+    .subscribe(res=>{
+      this.barChartData[0].data=[]
+      this.barChartLabels=[]
+      console.log(res.data)
+      // this.sectionsList=res.data;
+      res.data.forEach(element => {
+        
+        this.barChartData[0].data.push(element.t)
+        this.barChartLabels.push(element.SCHOOL_ID)
+      });
+      console.log(this.barChartData)
+    })
+    
+  }
   private getAllCourseBySemester() {
     const data = {
       year: 'year',
@@ -149,20 +174,7 @@ export class CourseComponent implements OnInit {
         console.log(res);
       });
   }
-  private getAllProducts() {
-    this.spinner.show();
-
-    const pagination: Pagination = {
-      pageSize: this.productsPerPage.toString(),
-      currentPage: this.currentPage.toString(),
-    };
-
-    const sort = { createdAt: -1 };
-  }
-
-  private getAllCategory() {}
-
-  private getAllSubCategory(categoryId: string) {}
+  
 
   /**
    * PAGINATION CHANGE
@@ -178,40 +190,16 @@ export class CourseComponent implements OnInit {
    * SELECTION CHANGE
    * FILTER
    */
-  onSelectSchool(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      const category = event.source.value;
-      this.query = { category: category._id };
-      this.getAllSubCategory(category._id);
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
+  onSelectYear(data) {
+      this.selectedYear=data;
   }
 
-  onSelectSemesters(event: MatOptionSelectionChange) {
-    // if (event.isUserInput) {
-    //   const subCategory = event.source.value; //as DataType
-    //   this.query = { ...this.query, ...{ subCategory: subCategory._id } };
-    //   if (this.currentPage > 1) {
-    //     this.router.navigate([], { queryParams: { page: 1 } });
-    //   } else {
-    //     this.getAllProducts();
-    //   }
-    // }
+  onSelectSemesters(data) {
+   this.selectedSemester=data;
   }
 
-  onSelectStockType(event: MatOptionSelectionChange) {
-    if (event.isUserInput) {
-      this.query = event.source.value;
-      if (this.currentPage > 1) {
-        this.router.navigate([], { queryParams: { page: 1 } });
-      } else {
-        this.getAllProducts();
-      }
-    }
+  onSelectRange(data) {
+   
   }
 
   /**
@@ -225,7 +213,7 @@ export class CourseComponent implements OnInit {
       queryParams: { page: null },
       queryParamsHandling: 'merge',
     });
-    this.getAllProducts();
+  
   }
 
   /**

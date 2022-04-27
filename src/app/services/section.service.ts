@@ -21,4 +21,7 @@ export class SectionService {
   getAllUnusedSections(data){
     return this.httpClient.post<{ data:any, message: string }>( API_SEMESTER+ 'get-all-unused-sections', data);
   }
+  getSectionWiseComparison(data){
+    return this.httpClient.post<{ data:any, message: string }>( API_SEMESTER+ 'get-section-wise-comparison', data);
+  }
 }
